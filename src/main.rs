@@ -5,7 +5,7 @@
 
 #![allow(clippy::type_complexity)]
 
-use bevy::prelude::*;
+use bevy::{a11y::Focus, prelude::*};
 
 fn main() {
     App::new()
@@ -42,9 +42,6 @@ fn main() {
         .add_systems(PostUpdate, remove_displayed_todos)
         .run();
 }
-
-#[derive(Resource, Default, Deref, DerefMut)]
-pub struct Focus(pub Option<Entity>);
 
 #[derive(Event)]
 struct SetFocus(Option<Entity>);
@@ -202,7 +199,7 @@ fn handle_enter(
 
 fn handle_focus(mut set_focus_events: EventReader<SetFocus>, mut focus: ResMut<Focus>) {
     for ev in set_focus_events.iter() {
-        *focus = Focus(ev.0)
+        **focus = ev.0;
     }
 }
 
